@@ -12,20 +12,33 @@
 
 2. Setup environment variables for MDH connection
    #+begin_src bash
-    cp env.local .env
+    export MDH_SECRET_KEY="<Your MDH account secret key>"
+    export MDH_ACCOUNT_NAME=""
+    export MDH_PROJECT_ID=""
+    export MDH_PROJECT_NAME=""
    #+end_src
 
 3. Fill out the variables in .env from MDH.
 
-   1. =MDH_SECRET= - MDH service account private key. Read more about service account [[https://developer.mydatahelps.org/api/service_account.html][here]].
+   1. =MDH_SECRET_KEY= - MDH service account private key. Read more about service account [[https://developer.mydatahelps.org/api/service_account.html][here]].
 
-   2. =MDH_ACC_NAME= - MDH service account name.
+   2. =MDH_ACCOUNT_NAME= - MDH service account name.
 
-   3. =MDH_PROJ_ID= - MDH project id for the project you want to connect for sensorkit data.
+   3. =MDH_PROJECT_ID= - MDH project id for the project you want to connect for sensorkit data.
 
-   4. =MDH_PROJ_NAME= - MDH project name. Convert it all to lower case and replace spaces with =_=.
+   4. =MDH_PROJECT_NAME= - MDH project name. Convert it all to lower case and replace spaces with =_=.
 
 4. Source the file
    #+begin_src bash
     source .env
    #+end_src
+
+5. Test out the SF connection to MDH for SensorKit data
+   #+begin_src bash
+    python3 TestConnection.py
+   #+end_src
+
+   If it runs correctly you will get an output that looks like the following
+   #+begin_quote
+
+   #+end_quote
