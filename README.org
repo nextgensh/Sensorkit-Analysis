@@ -1,0 +1,31 @@
+#+title: Readme
+
+* Setting up SensorFabric to connect to MDH
+
+1. Create a virtual python environment and install all the requirements
+   #+begin_src bash
+    cd Sensorkit-Analysis
+    python3 -m venv env
+    source env/bin/activate
+    pip3 install -r requirements.txt
+   #+end_src
+
+2. Setup environment variables for MDH connection
+   #+begin_src bash
+    cp env.local .env
+   #+end_src
+
+3. Fill out the variables in .env from MDH.
+
+   1. =MDH_SECRET= - MDH service account private key. Read more about service account [[https://developer.mydatahelps.org/api/service_account.html][here]].
+
+   2. =MDH_ACC_NAME= - MDH service account name.
+
+   3. =MDH_PROJ_ID= - MDH project id for the project you want to connect for sensorkit data.
+
+   4. =MDH_PROJ_NAME= - MDH project name. Convert it all to lower case and replace spaces with =_=.
+
+4. Source the file
+   #+begin_src bash
+    source .env
+   #+end_src
