@@ -12,7 +12,6 @@
 
 2. Setup environment variables for MDH connection
    #+begin_src bash
-    export MDH_SECRET_KEY="<Your MDH account secret key>"
     export MDH_ACCOUNT_NAME=""
     export MDH_PROJECT_ID=""
     export MDH_PROJECT_NAME=""
@@ -20,18 +19,22 @@
 
 3. Fill out the variables in .env from MDH.
 
-   1. =MDH_SECRET_KEY= - MDH service account private key. Read more about service account [[https://developer.mydatahelps.org/api/service_account.html][here]].
+   1. =MDH_SECRET_KEY= (look at next point for special instructions) - MDH service account private key. Read more about service account [[https://developer.mydatahelps.org/api/service_account.html][here]].
 
    2. =MDH_ACCOUNT_NAME= - MDH service account name.
 
    3. =MDH_PROJECT_ID= - MDH project id for the project you want to connect for sensorkit data.
 
-   4. =MDH_PROJECT_NAME= - MDH project name. Convert it all to lower case and replace spaces with =_=.
+   4. =MDH_PROJECT_NAME= - MDH project name. Convert it all to lower case and replace spaces with =_
 
-4. Source the file
-   #+begin_src bash
-    source .env
-   #+end_src
+4. Export your secret key
+   Since bash and other shells don't really do well with multiline environment variables a good
+   practice is to store the key inside a file and then use that to export it as an environment
+   variable.
+   Say you create a new file named =key.pem= and then store your private key in it. Make sure to set
+   the permisions on this file to =600= and also to securely store this file on your filesystem.
+   You can then set the environment variable by using =export MDH_SECRET_KEY=$(cat key.pem)=. Make
+   sure to verify that the key shows up as a multiline entry by running =echo "$MDH_SECRET_KEY"=
 
 5. Test out the SF connection to MDH for SensorKit data
    #+begin_src bash
@@ -40,5 +43,39 @@
 
    If it runs correctly you will get an output that looks like the following
    #+begin_quote
+                     sampletype  ...                                        _provenance
+0   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+1   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+2   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+3   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+4   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+5   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+6   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+7   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+8   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+9   sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
+10  sensorkit-pedometer  ...  {exportstartdate=2025-04-29T00:00:00+00:00, s3...
 
+[11 rows x 12 columns]
    #+end_quote
+
+6. Running the Marimo notebook
+   Once you have confirmed that you are able to connect to MDH, you can now run the analysis code
+   using Marimo notebook and start it in edit mode.
+   #+begin_src bash
+    marimo edit sensorkit-intro.py
+   #+end_src
+   Visit the browser URL that it prints to start hacking on the sensorkit data. If you wish to
+   configure on which address and port you want Marimo to listen to use =--host= and =--port=
+   respectively.
+   Happy Hacking!!
+
+7. Errors
+
+   1. If you see a key error for JWT with PEM format make sure your key is correctly formatted. It
+      should be multiline after you print it. Make sure to check for additional newlines or spaces,
+      and trim everything up. Remember your key includes the BEING and END portions.
+
+8. Future Plans
+
+   1. Adding of a dockerfile to support running this through docker.
